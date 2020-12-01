@@ -5,10 +5,8 @@ import 'package:flutter/services.dart';
 
 void main() {
 
-  //ok
-
-  // We need to call it manually,
-  // because we going to call setPreferredOrientations()
+  // We need to call this manually,
+  // because we're going to call setPreferredOrientations()
   // before the runApp() call
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -42,8 +40,7 @@ void main() {
         headline3: TextStyle(fontSize: 20.0, color: Colors.white),
         headline4: TextStyle(fontSize: 18.0, color: Colors.white),
         headline5: TextStyle(fontSize: 16.0, color: Colors.white),
-        headline6: TextStyle(fontSize: 16.0, color: Colors.white, fontWeight: FontWeight.w100),
-        //to add 555
+        headline6: TextStyle(fontSize: 14.0, color: Colors.white, fontWeight: FontWeight.w100),
       ),
     ),
   )));

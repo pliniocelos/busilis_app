@@ -1,3 +1,4 @@
+import 'package:url_launcher/url_launcher.dart';
 import 'package:busilis/ui/components/checkbox_list_tile_subject.dart';
 import 'package:busilis/ui/components/slider.dart';
 import 'package:busilis/ui/screens/test.dart';
@@ -27,7 +28,6 @@ class _ChooseScreenState extends State<ChooseScreen> {
     });
   }
 
-
   double sliderValue = 10;
 
   bool _chooseP = true;
@@ -50,6 +50,49 @@ class _ChooseScreenState extends State<ChooseScreen> {
     }
   }
 
+  _launchURL() async {
+    const url = 'https://www.lumioeventos.com';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  showAboutDialog(){
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return AlertDialog(
+            backgroundColor: Color(0xff721C1E),
+            title: Center(
+                child: Text(
+                  "Sobre Busílis",
+                  style: TextStyle(color: Colors.white, fontSize: 24),
+                )),
+            content: //Center(child:
+            Text(
+                "Este app foi desenvolvido com base no livro \"Busílis - o X da questão\", escrito pelo Prof. Vasko em Aracaju (SE)"
+            ),
+
+            actions: [
+              FlatButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    _launchURL();
+                  },
+                  child: Text("Quero conhecer mais")),
+              FlatButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text("Sair")),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -68,10 +111,6 @@ class _ChooseScreenState extends State<ChooseScreen> {
         stateConnection = 2;
     }
 
-
-
-
-
     return Scaffold(
       backgroundColor: Color(0xff721C1E),
       appBar: AppBar(
@@ -85,7 +124,15 @@ class _ChooseScreenState extends State<ChooseScreen> {
             Text(
               "Teste seus conhecimentos",
               style: Theme.of(context).textTheme.headline6,
-            )
+            ),
+      RaisedButton(
+          child: Text("Sobre"),
+          color: Color(0xff721C1E),
+          disabledTextColor: Colors.white24,
+          disabledColor: Color(0xff721C1E),
+          highlightColor: Color(0xff721C1E),
+          disabledElevation: 1,
+          onPressed: showAboutDialog)
           ],
         ),
         backgroundColor: Color(0xff5e0908),
