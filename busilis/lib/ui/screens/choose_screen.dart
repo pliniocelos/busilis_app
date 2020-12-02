@@ -45,8 +45,6 @@ class _ChooseScreenState extends State<ChooseScreen> {
           MaterialPageRoute(
               builder: (context) => TestScreen(_chooseP, _chooseM, _chooseH,
                   _chooseG, _chooseC, qtdQuestions)));
-    } else {
-      print("no");
     }
   }
 
@@ -96,19 +94,15 @@ class _ChooseScreenState extends State<ChooseScreen> {
   @override
   Widget build(BuildContext context) {
 
-    String string;
     switch (_source.keys.toList()[0]) {
       case ConnectivityResult.none:
-        string = "Offline";
-        stateConnection = 0;
+        stateConnection = 0; //offline
         break;
       case ConnectivityResult.mobile:
-        string = "Mobile: Online";
-        stateConnection = 1;
+        stateConnection = 1; //mobile
         break;
       case ConnectivityResult.wifi:
-        string = "WiFi: Online";
-        stateConnection = 2;
+        stateConnection = 2; //wifi
     }
 
     return Scaffold(
@@ -122,17 +116,23 @@ class _ChooseScreenState extends State<ChooseScreen> {
               height: 40,
             ),
             Text(
-              "Teste seus conhecimentos",
+              "O \"X\" da questão",
               style: Theme.of(context).textTheme.headline6,
             ),
-      RaisedButton(
-          child: Text("Sobre"),
-          color: Color(0xff721C1E),
-          disabledTextColor: Colors.white24,
-          disabledColor: Color(0xff721C1E),
-          highlightColor: Color(0xff721C1E),
-          disabledElevation: 1,
-          onPressed: showAboutDialog)
+
+      ButtonTheme(
+        minWidth: 60.0,
+        height: 36.0,
+        child: RaisedButton(
+            child: Text("Sobre", style: TextStyle(fontSize: 12),),
+            color: Color(0xff721C1E),
+            disabledTextColor: Colors.white24,
+            disabledColor: Color(0xff721C1E),
+            highlightColor: Color(0xff721C1E),
+            disabledElevation: 1,
+            onPressed: showAboutDialog)
+      ),
+
           ],
         ),
         backgroundColor: Color(0xff5e0908),
