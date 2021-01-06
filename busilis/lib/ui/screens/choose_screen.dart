@@ -49,7 +49,7 @@ class _ChooseScreenState extends State<ChooseScreen> {
   }
 
   _launchURL() async {
-    const url = 'https://www.lumioeventos.com';
+    const url = 'https://www.pliniovasconcelos.com/busilis';
     if (await canLaunch(url)) {
       await launch(url);
     } else {

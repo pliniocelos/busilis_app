@@ -9,7 +9,7 @@ import '../../models/question.dart';
 
 class TestScreen extends StatefulWidget {
   final String urlBase =
-      "https://pliniocelos.wixsite.com/busilis/_functions/questions/";
+      "https://www.pliniovasconcelos.com/_functions/questions/";
 
   bool chooseP;
   bool chooseM;
