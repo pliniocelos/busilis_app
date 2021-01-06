@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../../models/question.dart';
 
-
 class TestScreen extends StatefulWidget {
   final String urlBase =
       "https://www.pliniovasconcelos.com/_functions/questions/";
@@ -31,38 +30,33 @@ class TestScreen extends StatefulWidget {
   _TestScreenState createState() => _TestScreenState();
 }
 
-
-
 class _TestScreenState extends State<TestScreen> {
-
   String fullUrl;
   List<Question> list;
 
   Future<List<Question>> _getQuestions() async {
+    if (widget.isFirstTimeLoading) {
+      http.Response response = await http.get(fullUrl);
+      var dadosJson = json.decode(response.body);
 
-      if (widget.isFirstTimeLoading) {
-        http.Response response = await http.get(fullUrl);
-        var dadosJson = json.decode(response.body);
+      List<Question> questions = List();
 
-        List<Question> questions = List();
+      for (var question in dadosJson) {
+        Question q = Question(
+            question["question"],
+            question["a"],
+            question["b"],
+            question["c"],
+            question["correct"],
+            question["category"],
+            question["_id"]);
 
-        for (var question in dadosJson) {
-          Question q = Question(
-              question["question"],
-              question["a"],
-              question["b"],
-              question["c"],
-              question["correct"],
-              question["category"],
-              question["_id"]);
-
-          questions.add(q);
-        }
-        return questions;
-      } else {
-        return list;
+        questions.add(q);
       }
-
+      return questions;
+    } else {
+      return list;
+    }
   }
 
   @override
@@ -72,7 +66,6 @@ class _TestScreenState extends State<TestScreen> {
     Question question;
 
     getRatingResultsText() {
-
       if (widget.numCorrectAnswers == numQuestions) {
         return "Você é o melhor!";
       } else if ((widget.numCorrectAnswers / numQuestions) >= 0.7) {
@@ -278,7 +271,3 @@ class QuestionProvider extends InheritedWidget {
     throw UnimplementedError();
   }
 }
-
-
-
-

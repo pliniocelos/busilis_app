@@ -13,7 +13,6 @@ class ChooseScreen extends StatefulWidget {
 }
 
 class _ChooseScreenState extends State<ChooseScreen> {
-
   int stateConnection; //0 - none  1 - mobile  2 - wifi
 
   Map _source = {ConnectivityResult.none: false};
@@ -57,7 +56,7 @@ class _ChooseScreenState extends State<ChooseScreen> {
     }
   }
 
-  showAboutDialog(){
+  showAboutDialog() {
     showDialog(
         context: context,
         barrierDismissible: false,
@@ -66,14 +65,12 @@ class _ChooseScreenState extends State<ChooseScreen> {
             backgroundColor: Color(0xff721C1E),
             title: Center(
                 child: Text(
-                  "Sobre Busílis",
-                  style: TextStyle(color: Colors.white, fontSize: 24),
-                )),
+              "Sobre Busílis",
+              style: TextStyle(color: Colors.white, fontSize: 24),
+            )),
             content: //Center(child:
-            Text(
-                "Este app foi desenvolvido com base no livro \"Busílis - o X da questão\", escrito pelo Prof. Vasko em Aracaju (SE)"
-            ),
-
+                Text(
+                    "Este app foi desenvolvido com base no livro \"Busílis - o X da questão\", escrito pelo Prof. Vasko em Aracaju (SE)"),
             actions: [
               FlatButton(
                   onPressed: () {
@@ -93,7 +90,6 @@ class _ChooseScreenState extends State<ChooseScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     switch (_source.keys.toList()[0]) {
       case ConnectivityResult.none:
         stateConnection = 0; //offline
@@ -119,20 +115,20 @@ class _ChooseScreenState extends State<ChooseScreen> {
               "O \"X\" da questão",
               style: Theme.of(context).textTheme.headline6,
             ),
-
-      ButtonTheme(
-        minWidth: 60.0,
-        height: 36.0,
-        child: RaisedButton(
-            child: Text("Sobre", style: TextStyle(fontSize: 12),),
-            color: Color(0xff721C1E),
-            disabledTextColor: Colors.white24,
-            disabledColor: Color(0xff721C1E),
-            highlightColor: Color(0xff721C1E),
-            disabledElevation: 1,
-            onPressed: showAboutDialog)
-      ),
-
+            ButtonTheme(
+                minWidth: 60.0,
+                height: 36.0,
+                child: RaisedButton(
+                    child: Text(
+                      "Sobre",
+                      style: TextStyle(fontSize: 12),
+                    ),
+                    color: Color(0xff721C1E),
+                    disabledTextColor: Colors.white24,
+                    disabledColor: Color(0xff721C1E),
+                    highlightColor: Color(0xff721C1E),
+                    disabledElevation: 1,
+                    onPressed: showAboutDialog)),
           ],
         ),
         backgroundColor: Color(0xff5e0908),
@@ -174,7 +170,6 @@ class _ChooseScreenState extends State<ChooseScreen> {
                       if (stateConnection != 0) {
                         nextScreen();
                       } else {
-
                         showDialog(
                             context: context,
                             barrierDismissible: false,
@@ -183,12 +178,13 @@ class _ChooseScreenState extends State<ChooseScreen> {
                                 backgroundColor: Color(0xff721C1E),
                                 title: Center(
                                     child: Text(
-                                      "Atenção",
-                                      style: TextStyle(color: Colors.white, fontSize: 24),
-                                    )),
+                                  "Atenção",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 24),
+                                )),
                                 content: //Center(child:
-                                Text(
-                                    "Verifique sua conexão com a Internet."),
+                                    Text(
+                                        "Verifique sua conexão com a Internet."),
                                 //),
                                 actions: [
                                   FlatButton(
@@ -199,14 +195,7 @@ class _ChooseScreenState extends State<ChooseScreen> {
                                 ],
                               );
                             });
-
-
-
-
-
-
                       }
-
                     },
                     style: OutlinedButton.styleFrom(
                       shape: RoundedRectangleBorder(

@@ -7,16 +7,10 @@ class StartScreen extends StatefulWidget {
 }
 
 class _StartScreenState extends State<StartScreen> {
-
   void nextScreen() {
-
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => ChooseScreen()));
-
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => ChooseScreen()));
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -38,17 +32,17 @@ class _StartScreenState extends State<StartScreen> {
                     Padding(
                       padding: EdgeInsets.only(bottom: 20.0),
                       child: Image(
-                        image: AssetImage('images/app_logo.png'),),
+                        image: AssetImage('images/app_logo.png'),
+                      ),
                     ),
                     Padding(
                       padding: EdgeInsets.only(bottom: 20.0),
                       child: Text("Teste seus conhecimentos!",
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.headline3
-                      ),
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.headline3),
                     ),
                     OutlinedButton(
-                      onPressed: (){
+                      onPressed: () {
                         nextScreen();
                       },
                       style: OutlinedButton.styleFrom(
@@ -67,9 +61,6 @@ class _StartScreenState extends State<StartScreen> {
                       ),
                     )
                   ],
-                )
-            )
-        )
-    );
+                ))));
   }
 }
