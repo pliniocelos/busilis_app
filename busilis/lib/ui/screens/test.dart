@@ -7,8 +7,8 @@ import 'package:http/http.dart' as http;
 import '../../models/question.dart';
 
 class TestScreen extends StatefulWidget {
-  final String urlBase =
-      "https://www.pliniovasconcelos.com/_functions/questions/";
+
+  final String urlBase = "https://pliniocelos.wixsite.com/site/_functions/questions/";
 
   bool chooseP;
   bool chooseM;
@@ -73,7 +73,7 @@ class _TestScreenState extends State<TestScreen> {
       } else if ((widget.numCorrectAnswers / numQuestions) >= 0.4) {
         return "Regular.";
       } else if ((widget.numCorrectAnswers / numQuestions) < 0.4) {
-        return "Fraco";
+        return "Quem sabe na próxima?";
       }
     }
 
