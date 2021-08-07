@@ -48,7 +48,7 @@ class _ChooseScreenState extends State<ChooseScreen> {
   }
 
   _launchURL() async {
-    const url = 'https://www.pliniovasconcelos.com/busilis';
+    const url = 'https://pliniocelos.wixsite.com/site/busilis';
     if (await canLaunch(url)) {
       await launch(url);
     } else {

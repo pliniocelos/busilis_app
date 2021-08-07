@@ -36,10 +36,10 @@ class _TestScreenState extends State<TestScreen> {
 
   Future<List<Question>> _getQuestions() async {
     if (widget.isFirstTimeLoading) {
-      http.Response response = await http.get(fullUrl);
+      http.Response response = await http.get(Uri.parse(fullUrl));
       var dadosJson = json.decode(response.body);
 
-      List<Question> questions = List();
+      List<Question> questions = [];
 
       for (var question in dadosJson) {
         Question q = Question(
@@ -69,9 +69,9 @@ class _TestScreenState extends State<TestScreen> {
       if (widget.numCorrectAnswers == numQuestions) {
         return "Você é o melhor!";
       } else if ((widget.numCorrectAnswers / numQuestions) >= 0.7) {
-        return "Boa média!";
+        return "Ótima média!";
       } else if ((widget.numCorrectAnswers / numQuestions) >= 0.4) {
-        return "Regular.";
+        return "Ainda pode melhorar.";
       } else if ((widget.numCorrectAnswers / numQuestions) < 0.4) {
         return "Quem sabe na próxima?";
       }
@@ -95,7 +95,7 @@ class _TestScreenState extends State<TestScreen> {
                         "Você acertou ${widget.numCorrectAnswers} de $numQuestions perguntas"),
                 //),
                 actions: [
-                  FlatButton(
+                  TextButton(
                       onPressed: () {
                         Navigator.pop(context);
                         Navigator.pop(context);
@@ -138,8 +138,6 @@ class _TestScreenState extends State<TestScreen> {
         c.toString();
 
     print(fullUrl);
-
-    CardQuestion cardQuestion;
 
     //Example URL: "https://pliniocelos.wixsite.com/busilis/_functions/questions/10?chooseP=true&chooseM=true&chooseH=true&chooseG=true&chooseC=true"
 
@@ -212,30 +210,32 @@ class _TestScreenState extends State<TestScreen> {
 
                         question =
                             list[widget.indexOfArrayQuestionsCurrentQuestion];
-                        return Column(
-                          children: [
-                            QuestionProvider(question,
-                                child: CardQuestion(
-                                  (widget.indexOfArrayQuestionsCurrentQuestion +
-                                          1)
-                                      .toString(),
-                                  (correct) {
-                                    _keyButtonNextQuestion.currentState
-                                        .methodInChild(isLastQuestion());
+                        return SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              QuestionProvider(question,
+                                  child: CardQuestion(
+                                    (widget.indexOfArrayQuestionsCurrentQuestion +
+                                        1)
+                                        .toString(),
+                                        (correct) {
+                                      _keyButtonNextQuestion.currentState
+                                          .methodInChild(isLastQuestion());
 
-                                    print(_keyButtonNextQuestion.toString());
+                                      print(_keyButtonNextQuestion.toString());
 
-                                    if (correct) {
-                                      widget.numCorrectAnswers++;
+                                      if (correct) {
+                                        widget.numCorrectAnswers++;
 
-                                      _keyTextCorrectAnswersBar.currentState
-                                          .methodInChild(getRatingText());
+                                        _keyTextCorrectAnswersBar.currentState
+                                            .methodInChild(getRatingText());
 
-                                      print('RETURN OF BUTTON NEXT - FALSE');
-                                    } else {}
-                                  },
-                                )),
-                          ],
+                                        print('RETURN OF BUTTON NEXT - FALSE');
+                                      } else {}
+                                    },
+                                  )),
+                            ],
+                          )
                         );
                       }
                       break;
@@ -253,16 +253,17 @@ class _TestScreenState extends State<TestScreen> {
 }
 
 class QuestionProvider extends InheritedWidget {
+
   final Question question;
 
   QuestionProvider(this.question, {Key key, this.child})
       : super(key: key, child: child);
 
+
   final Widget child;
 
   static QuestionProvider of(BuildContext context) {
-    return (context.inheritFromWidgetOfExactType(QuestionProvider)
-        as QuestionProvider);
+    return context.dependOnInheritedWidgetOfExactType<QuestionProvider>();
   }
 
   @override

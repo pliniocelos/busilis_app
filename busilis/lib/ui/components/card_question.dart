@@ -25,7 +25,7 @@ class CardQuestionState extends State<CardQuestion> {
     if (!locked) {
       return RadioListTile(
         activeColor: Colors.white,
-        title: Text(proposition),
+        title: Text(proposition??'vazio'),
         value: letter,
         groupValue: selectedRadioTile,
         onChanged: (value) {
@@ -103,10 +103,18 @@ class CardQuestionState extends State<CardQuestion> {
     }
   }
 
+
+
   @override
   Widget build(BuildContext context) {
 
-    final Question _q = QuestionProvider.of(context).question;
+    // if (QuestionProvider.of(context) == null) {
+    //
+    // }
+
+    var qP = QuestionProvider.of(context);
+
+    final Question _q = qP.question;
 
     return Card(
       color: Colors.transparent,
@@ -174,6 +182,14 @@ class CardQuestionState extends State<CardQuestion> {
     );
   }
 
+
+
 }
+//
+// class HandlerQuestionProvider extends QuestionProvider {
+//   static of(BuildContext context) {
+//     return QuestionProvider.current;
+//   }
+// }
 
 

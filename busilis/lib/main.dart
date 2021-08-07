@@ -1,5 +1,4 @@
 import 'package:busilis/ui/screens/choose_screen.dart';
-import 'package:busilis/ui/screens/start_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
