@@ -162,11 +162,70 @@ class _TestScreenState extends State<TestScreen> {
       });
     }
 
+    buildQuestion() {
+
+      return FutureBuilder<List<Question>>(
+          future: _getQuestions(),
+          builder: (context, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+              case ConnectionState.waiting:
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+                break;
+              case ConnectionState.active:
+              case ConnectionState.done:
+                print("TEST - CONNECTION DONE");
+                if (snapshot.hasError) {
+                  print("TEST - CONNECTION ERROR: Error: ${snapshot.error}");
+                  Navigator.of(context).pop();
+                } else {
+                  widget.isFirstTimeLoading = false;
+                  print("TEST - LIST BUILDED");
+                  list = snapshot.data;
+                  question =
+                  list[widget.indexOfArrayQuestionsCurrentQuestion];
+                  return SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          QuestionProvider(question,
+                              child: CardQuestion(
+                                (widget.indexOfArrayQuestionsCurrentQuestion +
+                                    1)
+                                    .toString(),
+                                    (correct) {
+                                  _keyButtonNextQuestion.currentState
+                                      .methodInChild(isLastQuestion());
+
+                                  print(_keyButtonNextQuestion.toString());
+
+                                  if (correct) {
+                                    widget.numCorrectAnswers++;
+
+                                    _keyTextCorrectAnswersBar.currentState
+                                        .methodInChild(getRatingText());
+
+                                    print('RETURN OF BUTTON NEXT - FALSE');
+                                  } else {}
+                                },
+                              )),
+                        ],
+                      )
+                  );
+                }
+                break;
+            }
+            return null;
+          });
+
+    }
+
     return Scaffold(
         backgroundColor: Color(0xff721C1E),
         appBar: AppBar(
           iconTheme: IconThemeData(
-            color: Colors.white, //change your color here
+            color: Colors.white,
           ),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -188,60 +247,7 @@ class _TestScreenState extends State<TestScreen> {
                 fit: BoxFit.cover,
               ),
             ),
-            child: FutureBuilder<List<Question>>(
-                future: _getQuestions(),
-                builder: (context, snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.none:
-                    case ConnectionState.waiting:
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                      break;
-                    case ConnectionState.active:
-                    case ConnectionState.done:
-                      print("TEST - CONNECTION OK");
-                      if (snapshot.hasError) {
-                        print("TEST - CONNECTION ERROR");
-                      } else {
-                        widget.isFirstTimeLoading = false;
-                        print("TEST - LIST BUILDED");
-                        list = snapshot.data;
-
-                        question =
-                            list[widget.indexOfArrayQuestionsCurrentQuestion];
-                        return SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              QuestionProvider(question,
-                                  child: CardQuestion(
-                                    (widget.indexOfArrayQuestionsCurrentQuestion +
-                                        1)
-                                        .toString(),
-                                        (correct) {
-                                      _keyButtonNextQuestion.currentState
-                                          .methodInChild(isLastQuestion());
-
-                                      print(_keyButtonNextQuestion.toString());
-
-                                      if (correct) {
-                                        widget.numCorrectAnswers++;
-
-                                        _keyTextCorrectAnswersBar.currentState
-                                            .methodInChild(getRatingText());
-
-                                        print('RETURN OF BUTTON NEXT - FALSE');
-                                      } else {}
-                                    },
-                                  )),
-                            ],
-                          )
-                        );
-                      }
-                      break;
-                  }
-                  return null;
-                })));
+            child: buildQuestion()));
   }
 
   buildBody(

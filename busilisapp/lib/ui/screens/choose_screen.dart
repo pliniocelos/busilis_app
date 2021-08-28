@@ -35,15 +35,16 @@ class _ChooseScreenState extends State<ChooseScreen> {
   bool _chooseG = true;
   bool _chooseC = true;
 
-  void nextScreen() {
+  Future<void> nextScreen() async {
     if (_chooseP || _chooseM || _chooseH || _chooseG || _chooseC) {
       int qtdQuestions = sliderValue.toInt();
 
-      Navigator.push(
+      await Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => TestScreen(_chooseP, _chooseM, _chooseH,
                   _chooseG, _chooseC, qtdQuestions)));
+
     }
   }
 
