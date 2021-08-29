@@ -37,11 +37,11 @@ class _TestScreenState extends State<TestScreen> {
   Future<List<Question>> _getQuestions() async {
     if (widget.isFirstTimeLoading) {
       http.Response response = await http.get(Uri.parse(fullUrl));
-      var dadosJson = json.decode(response.body);
+      var dataJson = json.decode(response.body);
 
       List<Question> questions = [];
 
-      for (var question in dadosJson) {
+      for (var question in dataJson) {
         Question q = Question(
             question["question"],
             question["a"],
@@ -106,9 +106,10 @@ class _TestScreenState extends State<TestScreen> {
             });
 
         return true;
-      } else {
-        return false;
       }
+
+      return false;
+
     }
 
     bool p = widget.chooseP;
@@ -179,7 +180,8 @@ class _TestScreenState extends State<TestScreen> {
                 print("TEST - CONNECTION DONE");
                 if (snapshot.hasError) {
                   print("TEST - CONNECTION ERROR: Error: ${snapshot.error}");
-                  Navigator.of(context).pop();
+                  //Navigator.of(context).pop();
+                  return buildQuestion();
                 } else {
                   widget.isFirstTimeLoading = false;
                   print("TEST - LIST BUILDED");
