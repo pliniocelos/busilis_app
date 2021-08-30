@@ -91,6 +91,7 @@ class _ChooseScreenState extends State<ChooseScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     switch (_source.keys.toList()[0]) {
       case ConnectivityResult.none:
         stateConnection = 0; //offline

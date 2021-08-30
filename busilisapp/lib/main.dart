@@ -9,7 +9,7 @@ void main() {
   // before the runApp() call
   WidgetsFlutterBinding.ensureInitialized();
 
-  SystemChrome.setEnabledSystemUIOverlays([]);
+  //SystemChrome.setEnabledSystemUIOverlays([]);
 
   // Than we setup preferred orientations,
   // and only after it finished we run our app
