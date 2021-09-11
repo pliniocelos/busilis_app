@@ -1,6 +1,6 @@
-# busilis
+# busilisapp
 
-Busilis for Education.
+New Busilis for Education (BR)
 
 ## Getting Started
 

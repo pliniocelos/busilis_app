@@ -15,7 +15,6 @@ void main() {
   // and only after it finished we run our app
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) => runApp(MaterialApp(
-    //home: ChooseScreen(),
     home: ChooseScreen(),
 
     debugShowCheckedModeBanner: false,

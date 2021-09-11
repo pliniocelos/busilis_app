@@ -1,5 +1,5 @@
 name: busilisapp
-description: Busilis for Education.
+description: New Busilis for Education (BR)
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.3+4
+version: 1.0.4+5
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -27,14 +27,21 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.3
-  connectivity: ^3.0.6
-  http: ^0.13.3
-  url_launcher: ^6.0.9
+  cupertino_icons: ^1.0.0
+  http: ^0.12.2
+  url_launcher: ^5.7.10
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: "^0.8.1"
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "dev_assets/busilis-icon.png"
+  adaptive_icon_background: "#721c1e"
+  adaptive_icon_foreground: "dev_assets/busilis-icon-adaptive.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -57,10 +64,7 @@ flutter:
     - images/app_logo.png
     - images/c.png
     - images/w.png
-    - images/vasko.png
     - images/transparent.png
-    - images/cover_book.png
-
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

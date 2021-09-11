@@ -7,8 +7,8 @@ import 'package:http/http.dart' as http;
 import '../../models/question.dart';
 
 class TestScreen extends StatefulWidget {
-
-  final String urlBase = "https://pliniocelos.wixsite.com/site/_functions/questions/";
+  final String urlBase =
+      "https://pliniocelos.wixsite.com/site/_functions/questions/";
 
   bool chooseP;
   bool chooseM;
@@ -63,6 +63,8 @@ class _TestScreenState extends State<TestScreen> {
   Widget build(BuildContext context) {
     int numQuestions = widget.qtdQuestions;
 
+    int getQuestionsAttempts = 0;
+
     Question question;
 
     getRatingResultsText() {
@@ -89,18 +91,35 @@ class _TestScreenState extends State<TestScreen> {
                     child: Text(
                   getRatingResultsText(),
                   style: TextStyle(color: Colors.white, fontSize: 24),
+                      textAlign: TextAlign.center,
                 )),
                 content: //Center(child:
                     Text(
-                        "Você acertou ${widget.numCorrectAnswers} de $numQuestions perguntas"),
+                  "Você acertou ${widget.numCorrectAnswers} de $numQuestions perguntas",
+                  textAlign: TextAlign.center,
+                ),
                 //),
                 actions: [
-                  TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        Navigator.pop(context);
-                      },
-                      child: Text("Ok"))
+                  SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ButtonTheme(
+                                minWidth: 100.0,
+                                height: 35.0,
+                                child: OutlineButton(
+                                    borderSide:
+                                    BorderSide(color: Colors.white, width: 0.5),
+                                    child: new Text("Ok"),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20)),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                      Navigator.pop(context);
+                                    })),
+
+                          ]))
                 ],
               );
             });
@@ -109,7 +128,6 @@ class _TestScreenState extends State<TestScreen> {
       }
 
       return false;
-
     }
 
     bool p = widget.chooseP;
@@ -164,6 +182,32 @@ class _TestScreenState extends State<TestScreen> {
     }
 
     buildQuestion() {
+      if (getQuestionsAttempts == 4) {
+        return AlertDialog(
+          backgroundColor: Color(0xff721C1E),
+          title: Center(
+              child: Text(
+            "Oops!",
+            style: TextStyle(color: Colors.white, fontSize: 24),
+          )),
+          content: //Center(child:
+              Text(
+            "Algo deu errado. Favor, verificar sua Internet e tentar novamente.",
+            textAlign: TextAlign.center,
+          ),
+          //),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+              child: Text("Ok",
+                  style: TextStyle(color: Colors.white, fontSize: 16)),
+            ),
+          ],
+        );
+      }
 
       return FutureBuilder<List<Question>>(
           future: _getQuestions(),
@@ -177,50 +221,47 @@ class _TestScreenState extends State<TestScreen> {
                 break;
               case ConnectionState.active:
               case ConnectionState.done:
-                print("TEST - CONNECTION DONE");
+                print("PRINT - CONNECTION DONE");
                 if (snapshot.hasError) {
-                  print("TEST - CONNECTION ERROR: Error: ${snapshot.error}");
+                  print("PRINT - CONNECTION ERROR: Error: ${snapshot.error}");
+                  getQuestionsAttempts++;
                   //Navigator.of(context).pop();
                   return buildQuestion();
                 } else {
                   widget.isFirstTimeLoading = false;
-                  print("TEST - LIST BUILDED");
+                  print("PRINT - LIST BUILDED");
                   list = snapshot.data;
-                  question =
-                  list[widget.indexOfArrayQuestionsCurrentQuestion];
+                  question = list[widget.indexOfArrayQuestionsCurrentQuestion];
                   return SingleChildScrollView(
                       child: Column(
-                        children: [
-                          QuestionProvider(question,
-                              child: CardQuestion(
-                                (widget.indexOfArrayQuestionsCurrentQuestion +
-                                    1)
-                                    .toString(),
-                                    (correct) {
-                                  _keyButtonNextQuestion.currentState
-                                      .methodInChild(isLastQuestion());
+                    children: [
+                      QuestionProvider(question,
+                          child: CardQuestion(
+                            (widget.indexOfArrayQuestionsCurrentQuestion + 1)
+                                .toString(),
+                            (correct) {
+                              _keyButtonNextQuestion.currentState
+                                  .methodInChild(isLastQuestion());
 
-                                  print(_keyButtonNextQuestion.toString());
+                              print(_keyButtonNextQuestion.toString());
 
-                                  if (correct) {
-                                    widget.numCorrectAnswers++;
+                              if (correct) {
+                                widget.numCorrectAnswers++;
 
-                                    _keyTextCorrectAnswersBar.currentState
-                                        .methodInChild(getRatingText());
+                                _keyTextCorrectAnswersBar.currentState
+                                    .methodInChild(getRatingText());
 
-                                    print('RETURN OF BUTTON NEXT - FALSE');
-                                  } else {}
-                                },
-                              )),
-                        ],
-                      )
-                  );
+                                print('PRINT - RETURN OF BUTTON NEXT - FALSE');
+                              } else {}
+                            },
+                          )),
+                    ],
+                  ));
                 }
                 break;
             }
             return null;
           });
-
     }
 
     return Scaffold(
@@ -261,12 +302,10 @@ class _TestScreenState extends State<TestScreen> {
 }
 
 class QuestionProvider extends InheritedWidget {
-
   final Question question;
 
   QuestionProvider(this.question, {Key key, this.child})
       : super(key: key, child: child);
-
 
   final Widget child;
 

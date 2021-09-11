@@ -4,8 +4,6 @@ import 'package:busilisapp/ui/components/slider.dart';
 import 'package:busilisapp/ui/screens/test.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'dart:io';
-import 'package:connectivity/connectivity.dart';
 
 class ChooseScreen extends StatefulWidget {
   @override
@@ -13,20 +11,6 @@ class ChooseScreen extends StatefulWidget {
 }
 
 class _ChooseScreenState extends State<ChooseScreen> {
-  int stateConnection; //0 - none  1 - mobile  2 - wifi
-
-  Map _source = {ConnectivityResult.none: false};
-  MyConnectivity _connectivity = MyConnectivity.instance;
-
-  @override
-  void initState() {
-    super.initState();
-    _connectivity.initialise();
-    _connectivity.myStream.listen((source) {
-      setState(() => _source = source);
-    });
-  }
-
   double sliderValue = 10;
 
   bool _chooseP = true;
@@ -44,7 +28,6 @@ class _ChooseScreenState extends State<ChooseScreen> {
           MaterialPageRoute(
               builder: (context) => TestScreen(_chooseP, _chooseM, _chooseH,
                   _chooseG, _chooseC, qtdQuestions)));
-
     }
   }
 
@@ -71,19 +54,41 @@ class _ChooseScreenState extends State<ChooseScreen> {
             )),
             content: //Center(child:
                 Text(
-                    "Este app foi desenvolvido com base no livro \"Busílis - o X da questão\", escrito pelo Prof. Vasko em Aracaju (SE)"),
+              "Este app foi desenvolvido com base no livro \"Busílis - o X da questão\", escrito pelo Prof. Vasko em Aracaju (SE)",
+              textAlign: TextAlign.center,
+            ),
             actions: [
-              FlatButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    _launchURL();
-                  },
-                  child: Text("Quero conhecer mais")),
-              FlatButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text("Sair")),
+              SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ButtonTheme(
+                            minWidth: 25.0,
+                            height: 35.0,
+                            child: OutlineButton(
+                                borderSide:
+                                    BorderSide(color: Colors.white, width: 0.5),
+                                child: new Text("Quero conhecer mais"),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  _launchURL();
+                                })),
+                        SizedBox(width: 8.0),
+                        ButtonTheme(
+                            minWidth: 25.0,
+                            height: 35.0,
+                            child: OutlineButton(
+                                borderSide: BorderSide(color: Colors.white, width: 0.5),
+                                child: new Text("Fechar"),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                }))
+                      ]))
             ],
           );
         });
@@ -91,18 +96,6 @@ class _ChooseScreenState extends State<ChooseScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-    switch (_source.keys.toList()[0]) {
-      case ConnectivityResult.none:
-        stateConnection = 0; //offline
-        break;
-      case ConnectivityResult.mobile:
-        stateConnection = 1; //mobile
-        break;
-      case ConnectivityResult.wifi:
-        stateConnection = 2; //wifi
-    }
-
     return Scaffold(
       backgroundColor: Color(0xff721C1E),
       appBar: AppBar(
@@ -169,35 +162,7 @@ class _ChooseScreenState extends State<ChooseScreen> {
                   }),
                   OutlinedButton(
                     onPressed: () {
-                      if (stateConnection != 0) {
-                        nextScreen();
-                      } else {
-                        showDialog(
-                            context: context,
-                            barrierDismissible: false,
-                            builder: (context) {
-                              return AlertDialog(
-                                backgroundColor: Color(0xff721C1E),
-                                title: Center(
-                                    child: Text(
-                                  "Atenção",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 24),
-                                )),
-                                content: //Center(child:
-                                    Text(
-                                        "Verifique sua conexão com a Internet."),
-                                //),
-                                actions: [
-                                  FlatButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text("Ok"))
-                                ],
-                              );
-                            });
-                      }
+                      nextScreen();
                     },
                     style: OutlinedButton.styleFrom(
                       shape: RoundedRectangleBorder(
@@ -218,42 +183,4 @@ class _ChooseScreenState extends State<ChooseScreen> {
               ))),
     );
   }
-}
-
-class MyConnectivity {
-  MyConnectivity._internal();
-
-  static final MyConnectivity _instance = MyConnectivity._internal();
-
-  static MyConnectivity get instance => _instance;
-
-  Connectivity connectivity = Connectivity();
-
-  StreamController controller = StreamController.broadcast();
-
-  Stream get myStream => controller.stream;
-
-  void initialise() async {
-    ConnectivityResult result = await connectivity.checkConnectivity();
-    _checkStatus(result);
-    connectivity.onConnectivityChanged.listen((result) {
-      _checkStatus(result);
-    });
-  }
-
-  void _checkStatus(ConnectivityResult result) async {
-    bool isOnline = false;
-    try {
-      final result = await InternetAddress.lookup('example.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        isOnline = true;
-      } else
-        isOnline = false;
-    } on SocketException catch (_) {
-      isOnline = false;
-    }
-    controller.sink.add({result: isOnline});
-  }
-
-  void disposeStream() => controller.close();
 }
